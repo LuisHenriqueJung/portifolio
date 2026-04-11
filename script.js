@@ -35,6 +35,7 @@ function createParticles() {
 function initCursorGlow() {
   if (window.matchMedia('(pointer: fine)').matches) {
     const glow = document.getElementById('cursorGlow');
+    const hero = document.getElementById('hero');
     let mouseX = 0;
     let mouseY = 0;
     let glowX = 0;
@@ -43,6 +44,11 @@ function initCursorGlow() {
     document.addEventListener('mousemove', function (e) {
       mouseX = e.clientX;
       mouseY = e.clientY;
+
+      if (hero) {
+        hero.style.setProperty('--spotlight-x', mouseX + 'px');
+        hero.style.setProperty('--spotlight-y', mouseY + 'px');
+      }
     });
 
     function animateGlow() {
@@ -97,6 +103,23 @@ function updateNavState() {
   if (scrollIndicator) {
     scrollIndicator.style.opacity = window.scrollY > 200 ? '0' : '1';
   }
+}
+
+// ========================================
+// BACK TO TOP
+// ========================================
+function updateBackToTopVisibility() {
+  var btn = document.getElementById('backToTop');
+  if (!btn) return;
+  btn.classList.toggle('visible', window.scrollY > 450);
+}
+
+function initBackToTop() {
+  var btn = document.getElementById('backToTop');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 // ========================================
@@ -312,6 +335,7 @@ window.addEventListener('scroll', function () {
       updateScrollProgress();
       updateNavState();
       updateActiveLink();
+      updateBackToTopVisibility();
       ticking = false;
     });
     ticking = true;
@@ -332,6 +356,8 @@ document.addEventListener('DOMContentLoaded', function () {
   initCardTilt();
   initDataDots();
   initHeroReveal();
+  initBackToTop();
   updateNavState();
   updateScrollProgress();
+  updateBackToTopVisibility();
 });
