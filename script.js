@@ -45,6 +45,51 @@ function createParticles() {
 }
 
 // ========================================
+// COMETS (shooting stars)
+// ========================================
+const cometTypes = [
+  { anim: 'comet-fly-br', startPos: () => ({ x: Math.random() * 60 + 35, y: Math.random() * 25 }) },
+  { anim: 'comet-fly-bl', startPos: () => ({ x: Math.random() * 30, y: Math.random() * 25 }) },
+  { anim: 'comet-fly-r', startPos: () => ({ x: 85 + Math.random() * 10, y: Math.random() * 60 + 20 }) },
+  { anim: 'comet-fly-d', startPos: () => ({ x: Math.random() * 80 + 10, y: Math.random() * 15 }) }
+];
+
+function spawnComet() {
+  const container = document.getElementById('heroParticles');
+  if (!container) return;
+
+  const type = cometTypes[Math.floor(Math.random() * cometTypes.length)];
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('comet-wrapper', type.anim);
+
+  const comet = document.createElement('div');
+  comet.classList.add('comet');
+
+  const pos = type.startPos();
+  const duration = Math.random() * 0.8 + 1.8;
+
+  wrapper.style.left = pos.x + '%';
+  wrapper.style.top = pos.y + '%';
+  wrapper.style.animation = `${type.anim} ${duration}s ease-out forwards`;
+
+  wrapper.appendChild(comet);
+  container.appendChild(wrapper);
+
+  setTimeout(() => wrapper.remove(), duration * 1000 + 100);
+}
+
+function initComets() {
+  const nextSpawn = () => Math.random() * 4000 + 2500;
+
+  const loop = () => {
+    spawnComet();
+    setTimeout(loop, nextSpawn());
+  };
+
+  setTimeout(loop, 800);
+}
+
+// ========================================
 // CURSOR GLOW (desktop only)
 // ========================================
 function initCursorGlow() {
@@ -362,6 +407,7 @@ window.addEventListener('scroll', function () {
 // ========================================
 document.addEventListener('DOMContentLoaded', function () {
   createParticles();
+  initComets();
   initCursorGlow();
   initCarousel();
   initRevealAnimations();
