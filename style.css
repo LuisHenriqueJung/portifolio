@@ -271,6 +271,25 @@ body:hover .cursor-glow {
   z-index: 0;
   pointer-events: none;
   background:
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.22) 0 1px, transparent 1.3px),
+    radial-gradient(circle at 16% 28%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 22% 12%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 38% 30%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 44% 22%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 52% 10%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 60% 18%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 68% 8%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 76% 24%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 90% 32%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 12% 52%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 26% 58%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 40% 64%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 54% 58%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 70% 62%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 86% 56%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 18% 88%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 48% 86%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 78% 90%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
     radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.26) 0 1px, transparent 1.2px),
     radial-gradient(circle at 26% 36%, rgba(255, 255, 255, 0.22) 0 1px, transparent 1.2px),
     radial-gradient(circle at 32% 22%, rgba(46, 148, 148, 0.26) 0 1px, transparent 1.3px),
@@ -1737,8 +1756,60 @@ body:hover .cursor-glow {
     margin-bottom: 40px;
   }
 
-  .hero-tagline {
+  .hero {
+    padding: 0 16px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .hero-avatar {
+    width: 100px;
+    margin: 0 auto 14px;
+  }
+
+  .hero-greeting {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .hero-name {
+    font-size: clamp(28px, 10vw, 42px);
+    margin-bottom: 14px;
+  }
+
+  .hero-title-wrapper {
+    height: 42px;
+    margin-bottom: 14px;
+  }
+
+  .carousel-item {
     font-size: 16px;
+    line-height: 42px;
+  }
+
+  .hero-tagline {
+    font-size: 14px;
+    max-width: 100%;
+    margin: 0 auto 28px;
+    padding: 0 8px;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 24px;
+    font-size: 14px;
   }
 
   .timeline-item {

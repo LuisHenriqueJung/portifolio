@@ -3,24 +3,39 @@
 // ========================================
 function createParticles() {
   const container = document.getElementById('heroParticles');
-  const count = window.innerWidth < 768 ? 25 : 50;
+  const count = window.innerWidth < 768 ? 90 : 120;
 
   for (let i = 0; i < count; i++) {
     const particle = document.createElement('div');
     particle.classList.add('particle');
 
-    const size = Math.random() * 4 + 1;
+    const size = Math.random() * 2.5 + 0.5;
     const left = Math.random() * 100;
     const duration = Math.random() * 12 + 8;
     const delay = Math.random() * 10;
-    const hue = Math.random() > 0.5 ? 187 : 270;
+
+    var color, glow;
+    var roll = Math.random();
+    if (roll < 0.65) {
+      color = 'rgba(255, 255, 255, 0.85)';
+      glow = 'rgba(255, 255, 255, 0.35)';
+    } else if (roll < 0.82) {
+      color = 'rgba(200, 220, 255, 0.80)';
+      glow = 'rgba(180, 200, 255, 0.25)';
+    } else if (roll < 0.94) {
+      color = 'rgba(255, 240, 210, 0.78)';
+      glow = 'rgba(255, 220, 180, 0.22)';
+    } else {
+      color = 'rgba(255, 200, 180, 0.75)';
+      glow = 'rgba(255, 180, 150, 0.20)';
+    }
 
     particle.style.cssText = `
       width: ${size}px;
       height: ${size}px;
       left: ${left}%;
-      background: hsl(${hue}, 70%, 60%);
-      box-shadow: 0 0 ${size * 3}px hsl(${hue}, 70%, 50%);
+      background: ${color};
+      box-shadow: 0 0 ${size * 2.5}px ${glow};
       animation-duration: ${duration}s;
       animation-delay: ${delay}s;
     `;
