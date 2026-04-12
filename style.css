@@ -1188,6 +1188,31 @@ body:hover .cursor-glow {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.arch-desktop-chip {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 3px 10px;
+  line-height: 1.4;
+}
+
+.arch-desktop-chip svg {
+  opacity: 0.6;
+  flex-shrink: 0;
 }
 
 .arch-flow {
@@ -1900,6 +1925,10 @@ body:hover .cursor-glow {
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+
+  .arch-desktop-chip {
+    display: inline-flex;
   }
 
   .projects-grid {
