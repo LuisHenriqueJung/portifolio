@@ -1524,6 +1524,62 @@ body:hover .cursor-glow {
   grid-template-rows: auto 16px auto;
   align-items: center;
   gap: 0;
+  position: relative;
+}
+
+.arch-connections {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.conn-path {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(100, 150, 220, 0.24));
+}
+
+.conn-particle {
+  filter: drop-shadow(0 0 3px rgba(140, 190, 240, 0.75));
+}
+
+.arch-ppe-grid .arch-node {
+  position: relative;
+  z-index: 1;
+}
+
+.arch-ppe-grid .arch-node[data-conn*="source"]::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(100, 150, 220, 0.6);
+  border: 2px solid rgba(140, 180, 230, 0.9);
+  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(100, 150, 220, 0.5);
+  z-index: 2;
+}
+
+.arch-ppe-grid .arch-node[data-conn*="target-"]::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(120, 170, 200, 0.5);
+  border: 2px solid rgba(150, 190, 230, 0.8);
+  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(120, 170, 200, 0.35);
+  z-index: 2;
 }
 
 .ppe-mobile   { grid-column: 1; grid-row: 1; }

@@ -262,32 +262,78 @@
         </div>
         <div class="featured-architecture">
           <h4>Architecture</h4>
-          <div class="arch-ppe-grid">
-            <div class="arch-node ppe-mobile">
+          <div class="arch-ppe-grid" id="ppeGrid">
+            <svg class="arch-connections" id="archConnections" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="grad-mc" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(100,150,220,0.3)"/>
+                  <stop offset="50%" stop-color="rgba(100,150,220,0.6)"/>
+                  <stop offset="100%" stop-color="rgba(100,150,220,0.3)"/>
+                </linearGradient>
+                <linearGradient id="grad-wc" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(100,150,220,0.3)"/>
+                  <stop offset="50%" stop-color="rgba(100,150,220,0.5)"/>
+                  <stop offset="100%" stop-color="rgba(100,150,220,0.3)"/>
+                </linearGradient>
+                <linearGradient id="grad-mf" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(120,170,200,0.3)"/>
+                  <stop offset="50%" stop-color="rgba(100,150,220,0.5)"/>
+                  <stop offset="100%" stop-color="rgba(120,170,200,0.3)"/>
+                </linearGradient>
+                <linearGradient id="grad-fv" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(120,170,200,0.3)"/>
+                  <stop offset="50%" stop-color="rgba(100,150,220,0.4)"/>
+                  <stop offset="100%" stop-color="rgba(100,150,220,0.2)"/>
+                </linearGradient>
+              </defs>
+
+              <path id="path-mc" class="conn-path" fill="none" stroke="url(#grad-mc)" stroke-width="0.5"/>
+              <path id="path-wc" class="conn-path" fill="none" stroke="url(#grad-wc)" stroke-width="0.5"/>
+              <path id="path-mf" class="conn-path" fill="none" stroke="url(#grad-mf)" stroke-width="0.5"/>
+              <path id="path-fv" class="conn-path" fill="none" stroke="url(#grad-fv)" stroke-width="0.5"/>
+
+              <circle class="conn-particle" r="1.2" fill="rgba(140,190,240,0.95)" stroke="rgba(220,240,255,0.9)" stroke-width="0.5" vector-effect="non-scaling-stroke">
+                <animateMotion dur="2s" repeatCount="indefinite" rotate="auto">
+                  <mpath href="#path-mc"/>
+                </animateMotion>
+              </circle>
+              <circle class="conn-particle" r="1.2" fill="rgba(100,170,230,0.95)" stroke="rgba(200,230,255,0.9)" stroke-width="0.5" vector-effect="non-scaling-stroke">
+                <animateMotion dur="2.5s" repeatCount="indefinite" begin="0.5s" rotate="auto">
+                  <mpath href="#path-wc"/>
+                </animateMotion>
+              </circle>
+              <circle class="conn-particle" r="1.2" fill="rgba(140,200,250,0.95)" stroke="rgba(230,245,255,0.9)" stroke-width="0.5" vector-effect="non-scaling-stroke">
+                <animateMotion dur="2s" repeatCount="indefinite" begin="1s" rotate="auto">
+                  <mpath href="#path-mf"/>
+                </animateMotion>
+              </circle>
+              <circle class="conn-particle" r="1.2" fill="rgba(150,195,245,0.95)" stroke="rgba(225,245,255,0.9)" stroke-width="0.5" vector-effect="non-scaling-stroke">
+                <animateMotion dur="2s" repeatCount="indefinite" begin="0.3s" rotate="auto">
+                  <mpath href="#path-fv"/>
+                </animateMotion>
+              </circle>
+            </svg>
+
+            <div class="arch-node ppe-mobile" data-conn="source">
               <span class="arch-label">Mobile</span>
               <span class="arch-detail">Android Native + Fingerprint SDK</span>
             </div>
-            <div class="arch-arrow-h ppe-arrow-mc"></div>
-            <div class="arch-node ppe-core">
+            <div class="arch-node ppe-core" data-conn="target-mc target-wc source">
               <span class="arch-label">Core API</span>
               <span class="arch-detail">Spring Boot + SQL Server</span>
             </div>
-            <div class="arch-arrow-h ppe-arrow-mf"></div>
-            <div class="arch-node ppe-face">
+            <div class="arch-node ppe-face" data-conn="target-mf source">
               <span class="arch-label">Face Engine</span>
               <span class="arch-detail">FastAPI + OpenCV</span>
             </div>
-            <div class="arch-arrow-h ppe-arrow-fv"></div>
-            <div class="arch-node ppe-vector">
+            <div class="arch-node ppe-vector" data-conn="target-fv">
               <span class="arch-label">Vector DB</span>
               <span class="arch-detail">Qdrant -- face embeddings</span>
             </div>
-            <div class="arch-node ppe-web">
+            <div class="arch-node ppe-web" data-conn="source">
               <span class="arch-label">Web</span>
               <span class="arch-detail">Angular Responsive + human.js</span>
             </div>
-            <div class="arch-arrow-h ppe-arrow-wc"></div>
-            <div class="arch-arrow-h ppe-arrow-wf"></div>
           </div>
         </div>
         <div class="featured-tech">
