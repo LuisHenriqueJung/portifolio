@@ -347,43 +347,6 @@ function initHeroReveal() {
   });
 }
 
-// ========================================
-// EXTRA DATA DOTS (more balls per connection)
-// ========================================
-function initDataDots() {
-  var arrows = document.querySelectorAll('.arch-arrow, .arch-arrow-h');
-
-  arrows.forEach(function (arrow, idx) {
-    for (var i = 0; i < 2; i++) {
-      // Extra cyan dot (send)
-      var dotSend = document.createElement('span');
-      dotSend.className = 'data-dot data-dot-send';
-      dotSend.style.animationDelay = (idx * 0.15 + i * 0.6 + 0.3) + 's';
-      arrow.appendChild(dotSend);
-
-      // Extra purple dot (return)
-      var dotReturn = document.createElement('span');
-      dotReturn.className = 'data-dot data-dot-return';
-      dotReturn.style.animationDelay = (idx * 0.15 + i * 0.6 + 0.9) + 's';
-      arrow.appendChild(dotReturn);
-    }
-  });
-
-  // Vertical connector dots
-  var connectors = document.querySelectorAll('.arch-connector-up');
-  connectors.forEach(function (conn) {
-    var dotUp = document.createElement('span');
-    dotUp.className = 'data-dot-v data-dot-v-up';
-    dotUp.style.animationDelay = '0.9s';
-    conn.appendChild(dotUp);
-
-    var dotDown = document.createElement('span');
-    dotDown.className = 'data-dot-v data-dot-v-down';
-    dotDown.style.animationDelay = '0.3s';
-    conn.appendChild(dotDown);
-  });
-}
-
 function throttle(func, limit) {
   var inThrottle;
   return function () {
@@ -398,71 +361,10 @@ function throttle(func, limit) {
   };
 }
 
-function initPPEConnections() {
-  var grid = document.getElementById('ppeGrid');
-  var svg = document.getElementById('archConnections');
+function initArchConnections(gridId, svgId, connections) {
+  var grid = document.getElementById(gridId);
+  var svg = document.getElementById(svgId);
   if (!grid || !svg) return;
-
-  var connections = [
-    { from: '.ppe-mobile', to: '.ppe-core', path: '#path-mc', curve: 0.15 },
-    { from: '.ppe-web', to: '.ppe-core', path: '#path-wc', curve: -0.35 },
-    { from: '.ppe-core', to: '.ppe-face', path: '#path-mf', curve: 0.1 },
-    { from: '.ppe-face', to: '.ppe-vector', path: '#path-fv', curve: 0.12 }
-  ];
-
-  function updateConnections() {
-    var svgRect = svg.getBoundingClientRect();
-    var w = Math.max(1, svgRect.width);
-    var h = Math.max(1, svgRect.height);
-    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
-
-    connections.forEach(function (conn) {
-      var fromEl = grid.querySelector(conn.from);
-      var toEl = grid.querySelector(conn.to);
-      var pathEl = svg.querySelector(conn.path);
-      if (!fromEl || !toEl || !pathEl) return;
-
-      var fromRect = fromEl.getBoundingClientRect();
-      var toRect = toEl.getBoundingClientRect();
-
-      var x1 = fromRect.right - svgRect.left;
-      var y1 = fromRect.top + fromRect.height / 2 - svgRect.top;
-      var x2 = toRect.left - svgRect.left;
-      var y2 = toRect.top + toRect.height / 2 - svgRect.top;
-
-      var cp1x = x1 + (x2 - x1) * 0.5;
-      var cp1y = y1 + conn.curve * 60;
-      var cp2x = x2 - (x2 - x1) * 0.5;
-      var cp2y = y2 + conn.curve * 60;
-
-      pathEl.setAttribute(
-        'd',
-        'M ' + x1 + ' ' + y1 + ' C ' + cp1x + ' ' + cp1y + ', ' + cp2x + ' ' + cp2y + ', ' + x2 + ' ' + y2
-      );
-    });
-  }
-
-  updateConnections();
-  requestAnimationFrame(updateConnections);
-  setTimeout(updateConnections, 50);
-
-  var onChange = throttle(updateConnections, 100);
-  window.addEventListener('resize', onChange);
-  window.addEventListener('scroll', onChange, { passive: true });
-  setTimeout(updateConnections, 500);
-}
-
-function initRiskConnections() {
-  var grid = document.getElementById('riskGrid');
-  var svg = document.getElementById('riskConnections');
-  if (!grid || !svg) return;
-
-  var connections = [
-    { from: '.risk-mobile', to: '.risk-core', path: '#path-r-mc', curve: -0.12 },
-    { from: '.risk-mobile', to: '.risk-ai', path: '#path-r-ma', curve: 0.12 },
-    { from: '.risk-ai', to: '.risk-core', path: '#path-r-ac', curve: -0.35 },
-    { from: '.risk-ai', to: '.risk-mcp', path: '#path-r-am', curve: -0.06 }
-  ];
 
   function updateConnections() {
     var svgRect = svg.getBoundingClientRect();
@@ -537,9 +439,20 @@ document.addEventListener('DOMContentLoaded', function () {
   initMobileMenu();
   initSmoothScroll();
   initCardTilt();
-  initDataDots();
-  initPPEConnections();
-  initRiskConnections();
+
+  initArchConnections('ppeGrid', 'archConnections', [
+    { from: '.ppe-mobile', to: '.ppe-core', path: '#path-mc', curve: 0.15 },
+    { from: '.ppe-web', to: '.ppe-core', path: '#path-wc', curve: -0.35 },
+    { from: '.ppe-core', to: '.ppe-face', path: '#path-mf', curve: 0.1 },
+    { from: '.ppe-face', to: '.ppe-vector', path: '#path-fv', curve: 0.12 }
+  ]);
+
+  initArchConnections('riskGrid', 'riskConnections', [
+    { from: '.risk-mobile', to: '.risk-core', path: '#path-r-mc', curve: -0.12 },
+    { from: '.risk-mobile', to: '.risk-ai', path: '#path-r-ma', curve: 0.12 },
+    { from: '.risk-ai', to: '.risk-core', path: '#path-r-ac', curve: -0.35 },
+    { from: '.risk-ai', to: '.risk-mcp', path: '#path-r-am', curve: -0.06 }
+  ]);
   initHeroReveal();
   initBackToTop();
   updateNavState();

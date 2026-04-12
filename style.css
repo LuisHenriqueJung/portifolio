@@ -1268,79 +1268,6 @@ body:hover .cursor-glow {
 .arch-flow .arch-arrow:nth-child(8)::before { animation-delay: 0.6s; }
 .arch-flow .arch-arrow:nth-child(8)::after { animation-delay: 1.2s; }
 
-/* JS-injected extra dots */
-.data-dot {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.data-dot-send {
-  top: calc(50% - 5px);
-  left: -4px;
-  background: var(--cyan-light);
-  box-shadow: 0 0 6px var(--cyan-glow);
-  animation: data-send 1.2s ease-in-out infinite;
-}
-
-.data-dot-return {
-  top: calc(50% + 4px);
-  left: calc(100% + 4px);
-  background: var(--purple-light);
-  box-shadow: 0 0 6px var(--purple-glow);
-  animation: data-return 1.2s ease-in-out infinite;
-}
-
-/* Vertical extra dots */
-.data-dot-v {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.data-dot-v-up {
-  left: calc(50% - 5px);
-  bottom: 0;
-  background: var(--cyan-light);
-  box-shadow: 0 0 6px var(--cyan-glow);
-  animation: data-up 1.2s ease-in-out infinite;
-}
-
-.data-dot-v-down {
-  right: calc(50% - 5px);
-  top: 0;
-  background: var(--purple-light);
-  box-shadow: 0 0 6px var(--purple-glow);
-  animation: data-down 1.2s ease-in-out infinite;
-}
-
-@keyframes data-send {
-  0% { left: -4px; opacity: 0; transform: scale(0.5); }
-  10% { opacity: 1; transform: scale(1); }
-  90% { opacity: 1; transform: scale(1); }
-  100% { left: calc(100% + 4px); opacity: 0; transform: scale(0.5); }
-}
-
-@keyframes data-return {
-  0% { left: calc(100% + 4px); opacity: 0; transform: scale(0.5); }
-  10% { opacity: 1; transform: scale(1); }
-  90% { opacity: 1; transform: scale(1); }
-  100% { left: -4px; opacity: 0; transform: scale(0.5); }
-}
-
-/* Branching architecture graph */
-.arch-graph {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
 .arch-risk-grid {
   position: relative;
   display: grid;
@@ -1356,200 +1283,10 @@ body:hover .cursor-glow {
   z-index: 1;
 }
 
-.arch-risk-grid .arch-node[data-conn*="source"]::after {
-  content: '';
-  position: absolute;
-  right: -4px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(100, 150, 220, 0.6);
-  border: 2px solid rgba(140, 180, 230, 0.9);
-  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(100, 150, 220, 0.5);
-  z-index: 2;
-}
-
-.arch-risk-grid .arch-node[data-conn*="target-"]::before {
-  content: '';
-  position: absolute;
-  left: -4px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(120, 170, 200, 0.5);
-  border: 2px solid rgba(150, 190, 230, 0.8);
-  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(120, 170, 200, 0.35);
-  z-index: 2;
-}
-
 .risk-mobile { grid-column: 1; grid-row: 1 / 4; align-self: center; }
 .risk-core   { grid-column: 3; grid-row: 1; }
 .risk-ai     { grid-column: 3; grid-row: 3; }
 .risk-mcp    { grid-column: 5; grid-row: 3; }
-
-.arch-col {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.arch-col-branches {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.arch-branch {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  position: relative;
-}
-
-.arch-arrow-h {
-  width: 40px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  position: relative;
-  flex-shrink: 0;
-  overflow: visible;
-}
-
-/* Request dot: cyan, goes left → right */
-.arch-arrow-h::before {
-  content: '';
-  position: absolute;
-  top: calc(50% - 5px);
-  left: -3px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--cyan-light);
-  box-shadow: 0 0 6px var(--cyan-glow), 0 0 12px var(--cyan-glow);
-  animation: data-send 1.2s ease-in-out infinite;
-  opacity: 0;
-}
-
-/* Response dot: purple, goes right → left */
-.arch-arrow-h::after {
-  content: '';
-  position: absolute;
-  top: calc(50% + 3px);
-  left: calc(100% + 3px);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--purple-light);
-  box-shadow: 0 0 6px var(--purple-glow), 0 0 12px var(--purple-glow);
-  animation: data-return 1.2s ease-in-out infinite;
-  animation-delay: 0.6s;
-  opacity: 0;
-}
-
-/* Stagger branches */
-.arch-branch:nth-child(1) .arch-arrow-h::before { animation-delay: 0s; }
-.arch-branch:nth-child(1) .arch-arrow-h::after { animation-delay: 0.6s; }
-.arch-branch:nth-child(2) .arch-arrow-h:not(.sub-arrow)::before { animation-delay: 0.15s; }
-.arch-branch:nth-child(2) .arch-arrow-h:not(.sub-arrow)::after { animation-delay: 0.75s; }
-
-.arch-sub-branches {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  margin-left: 0;
-}
-
-.sub-arrow::before { animation-delay: 0.4s !important; }
-.sub-arrow::after { animation-delay: 1s !important; }
-
-/* Connector: AI Backend up to Core API */
-.arch-connector-up {
-  position: absolute;
-  right: 50%;
-  top: -16px;
-  width: 2px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: visible;
-}
-
-/* Cyan dot goes up (send) */
-.arch-connector-up::before {
-  content: '';
-  position: absolute;
-  left: calc(50% - 4px);
-  bottom: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--cyan-light);
-  box-shadow: 0 0 8px var(--cyan-glow);
-  animation: data-up 1.2s ease-in-out infinite;
-  animation-delay: 0.3s;
-  opacity: 0;
-}
-
-/* Purple dot comes down (return) */
-.arch-connector-up::after {
-  content: '';
-  position: absolute;
-  right: calc(50% - 4px);
-  top: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--purple-light);
-  box-shadow: 0 0 8px var(--purple-glow);
-  animation: data-down 1.2s ease-in-out infinite;
-  animation-delay: 0.9s;
-  opacity: 0;
-}
-
-@keyframes data-up {
-  0% {
-    bottom: 0;
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  15% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  85% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    bottom: 100%;
-    opacity: 0;
-    transform: scale(0.6);
-  }
-}
-
-@keyframes data-down {
-  0% {
-    top: 0;
-    opacity: 0;
-    transform: scale(0.6);
-  }
-  15% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  85% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-    transform: scale(0.6);
-  }
-}
 
 @media (max-width: 768px) {
   .featured-layout {
@@ -1603,7 +1340,8 @@ body:hover .cursor-glow {
   z-index: 1;
 }
 
-.arch-ppe-grid .arch-node[data-conn*="source"]::after {
+/* Generic anchor bullets (work for any architecture grid) */
+.arch-node[data-conn*="source"]::after {
   content: '';
   position: absolute;
   right: -4px;
@@ -1618,7 +1356,7 @@ body:hover .cursor-glow {
   z-index: 2;
 }
 
-.arch-ppe-grid .arch-node[data-conn*="target-"]::before {
+.arch-node[data-conn*="target-"]::before {
   content: '';
   position: absolute;
   left: -4px;
@@ -2123,37 +1861,16 @@ body:hover .cursor-glow {
     align-self: center;
   }
 
-  .arch-graph {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .arch-branch {
-    flex-direction: column;
-  }
-
-  .arch-arrow-h {
-    width: 2px;
-    height: 30px;
-  }
-
-  .arch-sub-branches {
-    flex-direction: column;
-  }
-
-  .arch-connector-up {
-    display: none;
-  }
-
   .arch-ppe-grid {
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
 
-  .arch-ppe-grid .arch-arrow-h {
-    width: 100%;
-    height: 2px;
+  .arch-risk-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .projects-grid {
