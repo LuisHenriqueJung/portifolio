@@ -452,6 +452,60 @@ function initPPEConnections() {
   setTimeout(updateConnections, 500);
 }
 
+function initRiskConnections() {
+  var grid = document.getElementById('riskGrid');
+  var svg = document.getElementById('riskConnections');
+  if (!grid || !svg) return;
+
+  var connections = [
+    { from: '.risk-mobile', to: '.risk-core', path: '#path-r-mc', curve: -0.12 },
+    { from: '.risk-mobile', to: '.risk-ai', path: '#path-r-ma', curve: 0.12 },
+    { from: '.risk-ai', to: '.risk-core', path: '#path-r-ac', curve: -0.35 },
+    { from: '.risk-ai', to: '.risk-mcp', path: '#path-r-am', curve: -0.06 }
+  ];
+
+  function updateConnections() {
+    var svgRect = svg.getBoundingClientRect();
+    var w = Math.max(1, svgRect.width);
+    var h = Math.max(1, svgRect.height);
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+
+    connections.forEach(function (conn) {
+      var fromEl = grid.querySelector(conn.from);
+      var toEl = grid.querySelector(conn.to);
+      var pathEl = svg.querySelector(conn.path);
+      if (!fromEl || !toEl || !pathEl) return;
+
+      var fromRect = fromEl.getBoundingClientRect();
+      var toRect = toEl.getBoundingClientRect();
+
+      var x1 = fromRect.right - svgRect.left;
+      var y1 = fromRect.top + fromRect.height / 2 - svgRect.top;
+      var x2 = toRect.left - svgRect.left;
+      var y2 = toRect.top + toRect.height / 2 - svgRect.top;
+
+      var cp1x = x1 + (x2 - x1) * 0.5;
+      var cp1y = y1 + conn.curve * 60;
+      var cp2x = x2 - (x2 - x1) * 0.5;
+      var cp2y = y2 + conn.curve * 60;
+
+      pathEl.setAttribute(
+        'd',
+        'M ' + x1 + ' ' + y1 + ' C ' + cp1x + ' ' + cp1y + ', ' + cp2x + ' ' + cp2y + ', ' + x2 + ' ' + y2
+      );
+    });
+  }
+
+  updateConnections();
+  requestAnimationFrame(updateConnections);
+  setTimeout(updateConnections, 50);
+
+  var onChange = throttle(updateConnections, 100);
+  window.addEventListener('resize', onChange);
+  window.addEventListener('scroll', onChange, { passive: true });
+  setTimeout(updateConnections, 500);
+}
+
 // ========================================
 // SCROLL EVENT (throttled)
 // ========================================
@@ -485,6 +539,7 @@ document.addEventListener('DOMContentLoaded', function () {
   initCardTilt();
   initDataDots();
   initPPEConnections();
+  initRiskConnections();
   initHeroReveal();
   initBackToTop();
   updateNavState();

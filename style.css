@@ -1149,6 +1149,7 @@ body:hover .cursor-glow {
   border-radius: 10px;
   padding: 24px;
   margin-bottom: 24px;
+  overflow: visible;
 }
 
 .featured-architecture h4 {
@@ -1339,6 +1340,56 @@ body:hover .cursor-glow {
   align-items: center;
   gap: 0;
 }
+
+.arch-risk-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr 56px 1fr;
+  grid-template-rows: auto 36px auto;
+  column-gap: 0;
+  row-gap: 0;
+  align-items: center;
+}
+
+.arch-risk-grid .arch-node {
+  position: relative;
+  z-index: 1;
+}
+
+.arch-risk-grid .arch-node[data-conn*="source"]::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(100, 150, 220, 0.6);
+  border: 2px solid rgba(140, 180, 230, 0.9);
+  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(100, 150, 220, 0.5);
+  z-index: 2;
+}
+
+.arch-risk-grid .arch-node[data-conn*="target-"]::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(120, 170, 200, 0.5);
+  border: 2px solid rgba(150, 190, 230, 0.8);
+  box-shadow: 0 0 0 2px rgba(10, 10, 32, 0.75), 0 0 10px rgba(120, 170, 200, 0.35);
+  z-index: 2;
+}
+
+.risk-mobile { grid-column: 1; grid-row: 1 / 4; align-self: center; }
+.risk-core   { grid-column: 3; grid-row: 1; }
+.risk-ai     { grid-column: 3; grid-row: 3; }
+.risk-mcp    { grid-column: 5; grid-row: 3; }
 
 .arch-col {
   display: flex;
