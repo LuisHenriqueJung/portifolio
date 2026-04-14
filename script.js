@@ -381,9 +381,13 @@ function initArchConnections(gridId, svgId, connections) {
       var fromRect = fromEl.getBoundingClientRect();
       var toRect = toEl.getBoundingClientRect();
 
-      var x1 = fromRect.right - svgRect.left;
+      var fromSide = conn.fromSide || 'right';
+      var toSide = conn.toSide || 'left';
+
+      var x1 =
+        (fromSide === 'left' ? fromRect.left : fromRect.right) - svgRect.left;
       var y1 = fromRect.top + fromRect.height / 2 - svgRect.top;
-      var x2 = toRect.left - svgRect.left;
+      var x2 = (toSide === 'right' ? toRect.right : toRect.left) - svgRect.left;
       var y2 = toRect.top + toRect.height / 2 - svgRect.top;
 
       var cp1x = x1 + (x2 - x1) * 0.5;
@@ -404,8 +408,68 @@ function initArchConnections(gridId, svgId, connections) {
 
   var onChange = throttle(updateConnections, 100);
   window.addEventListener('resize', onChange);
-  window.addEventListener('scroll', onChange, { passive: true });
   setTimeout(updateConnections, 500);
+}
+
+function initWhenVisible(element, initFn) {
+  if (!element || typeof initFn !== 'function') return;
+
+  if (!('IntersectionObserver' in window)) {
+    initFn();
+    return;
+  }
+
+  var didInit = false;
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!didInit && entry.isIntersecting) {
+          didInit = true;
+          initFn();
+          observer.disconnect();
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  observer.observe(element);
+}
+
+function initAutoplayVideosWhenVisible() {
+  var videos = document.querySelectorAll('video[autoplay]');
+  if (!videos.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    videos.forEach(function (video) {
+      if (video.paused) {
+        video.play().catch(function () {});
+      }
+    });
+    return;
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        var video = entry.target;
+        if (entry.isIntersecting) {
+          if (video.paused) {
+            video.play().catch(function () {});
+          }
+        } else {
+          if (!video.paused) {
+            video.pause();
+          }
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+
+  videos.forEach(function (video) {
+    observer.observe(video);
+  });
 }
 
 // ========================================
@@ -430,29 +494,41 @@ window.addEventListener('scroll', function () {
 // INIT
 // ========================================
 document.addEventListener('DOMContentLoaded', function () {
-  createParticles();
-  initComets();
-  initCursorGlow();
-  initCarousel();
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion) {
+    createParticles();
+    initComets();
+    initCursorGlow();
+    initCarousel();
+  }
   initRevealAnimations();
   initSkillBars();
   initMobileMenu();
   initSmoothScroll();
-  initCardTilt();
+  if (!reduceMotion) {
+    initCardTilt();
+  }
 
-  initArchConnections('ppeGrid', 'archConnections', [
-    { from: '.ppe-mobile', to: '.ppe-core', path: '#path-mc', curve: 0.15 },
-    { from: '.ppe-web', to: '.ppe-core', path: '#path-wc', curve: -0.35 },
-    { from: '.ppe-core', to: '.ppe-face', path: '#path-mf', curve: 0.1 },
-    { from: '.ppe-face', to: '.ppe-vector', path: '#path-fv', curve: 0.12 }
-  ]);
+  initAutoplayVideosWhenVisible();
 
-  initArchConnections('riskGrid', 'riskConnections', [
-    { from: '.risk-mobile', to: '.risk-core', path: '#path-r-mc', curve: -0.12 },
-    { from: '.risk-mobile', to: '.risk-ai', path: '#path-r-ma', curve: 0.12 },
-    { from: '.risk-ai', to: '.risk-core', path: '#path-r-ac', curve: -0.35 },
-    { from: '.risk-ai', to: '.risk-mcp', path: '#path-r-am', curve: -0.06 }
-  ]);
+  initWhenVisible(document.getElementById('ppeGrid'), function () {
+    initArchConnections('ppeGrid', 'archConnections', [
+      { from: '.ppe-mobile', to: '.ppe-core', path: '#path-mc', curve: 0.15 },
+      { from: '.ppe-web', to: '.ppe-core', path: '#path-wc', curve: -0.35 },
+      { from: '.ppe-core', to: '.ppe-face', path: '#path-mf', curve: 0.1 },
+      { from: '.ppe-face', to: '.ppe-vector', path: '#path-fv', curve: 0.12 }
+    ]);
+  });
+
+  initWhenVisible(document.getElementById('riskGrid'), function () {
+    initArchConnections('riskGrid', 'riskConnections', [
+      { from: '.risk-mobile', to: '.risk-core', path: '#path-r-mc', curve: -0.12 },
+      { from: '.risk-mobile', to: '.risk-ai', path: '#path-r-ma', curve: 0.12 },
+      { from: '.risk-ai', to: '.risk-mcp', path: '#path-r-im', curve: 0.05, toSide: 'left' },
+      { from: '.risk-mcp', to: '.risk-core', path: '#path-r-am', curve: -2.65, fromSide: 'left' }
+    ]);
+  });
   initHeroReveal();
   initBackToTop();
   updateNavState();
