@@ -1,129 +1,4 @@
 // ========================================
-// PARTICLES
-// ========================================
-function createParticles() {
-  const container = document.getElementById('heroParticles');
-  const count = window.innerWidth < 768 ? 90 : 120;
-
-  for (let i = 0; i < count; i++) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-
-    const size = Math.random() * 2.5 + 0.5;
-    const left = Math.random() * 100;
-    const duration = Math.random() * 12 + 8;
-    const delay = Math.random() * 10;
-
-    var color, glow;
-    var roll = Math.random();
-    if (roll < 0.65) {
-      color = 'rgba(255, 255, 255, 0.85)';
-      glow = 'rgba(255, 255, 255, 0.35)';
-    } else if (roll < 0.82) {
-      color = 'rgba(200, 220, 255, 0.80)';
-      glow = 'rgba(180, 200, 255, 0.25)';
-    } else if (roll < 0.94) {
-      color = 'rgba(255, 240, 210, 0.78)';
-      glow = 'rgba(255, 220, 180, 0.22)';
-    } else {
-      color = 'rgba(255, 200, 180, 0.75)';
-      glow = 'rgba(255, 180, 150, 0.20)';
-    }
-
-    particle.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
-      left: ${left}%;
-      background: ${color};
-      box-shadow: 0 0 ${size * 2.5}px ${glow};
-      animation-duration: ${duration}s;
-      animation-delay: ${delay}s;
-    `;
-
-    container.appendChild(particle);
-  }
-}
-
-// ========================================
-// COMETS (shooting stars)
-// ========================================
-const cometTypes = [
-  { anim: 'comet-fly-br', startPos: () => ({ x: Math.random() * 60 + 35, y: Math.random() * 25 }) },
-  { anim: 'comet-fly-bl', startPos: () => ({ x: Math.random() * 30, y: Math.random() * 25 }) },
-  { anim: 'comet-fly-r', startPos: () => ({ x: 85 + Math.random() * 10, y: Math.random() * 60 + 20 }) },
-  { anim: 'comet-fly-d', startPos: () => ({ x: Math.random() * 80 + 10, y: Math.random() * 15 }) }
-];
-
-function spawnComet() {
-  const container = document.getElementById('heroParticles');
-  if (!container) return;
-
-  const type = cometTypes[Math.floor(Math.random() * cometTypes.length)];
-  const wrapper = document.createElement('div');
-  wrapper.classList.add('comet-wrapper', type.anim);
-
-  const comet = document.createElement('div');
-  comet.classList.add('comet');
-
-  const pos = type.startPos();
-  const duration = Math.random() * 0.8 + 1.8;
-
-  wrapper.style.left = pos.x + '%';
-  wrapper.style.top = pos.y + '%';
-  wrapper.style.animation = `${type.anim} ${duration}s ease-out forwards`;
-
-  wrapper.appendChild(comet);
-  container.appendChild(wrapper);
-
-  setTimeout(() => wrapper.remove(), duration * 1000 + 100);
-}
-
-function initComets() {
-  const nextSpawn = () => Math.random() * 4000 + 2500;
-
-  const loop = () => {
-    spawnComet();
-    setTimeout(loop, nextSpawn());
-  };
-
-  setTimeout(loop, 800);
-}
-
-// ========================================
-// CURSOR GLOW (desktop only)
-// ========================================
-function initCursorGlow() {
-  if (window.matchMedia('(pointer: fine)').matches) {
-    const glow = document.getElementById('cursorGlow');
-    const hero = document.getElementById('hero');
-    let mouseX = 0;
-    let mouseY = 0;
-    let glowX = 0;
-    let glowY = 0;
-
-    document.addEventListener('mousemove', function (e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      if (hero) {
-        hero.style.setProperty('--spotlight-x', mouseX + 'px');
-        hero.style.setProperty('--spotlight-y', mouseY + 'px');
-      }
-    });
-
-    function animateGlow() {
-      glowX += (mouseX - glowX) * 0.08;
-      glowY += (mouseY - glowY) * 0.08;
-      glow.style.left = glowX + 'px';
-      glow.style.top = glowY + 'px';
-      requestAnimationFrame(animateGlow);
-    }
-
-    animateGlow();
-  }
-}
-
-// ========================================
 // TITLE CAROUSEL
 // ========================================
 function initCarousel() {
@@ -152,16 +27,11 @@ function updateScrollProgress() {
 // ========================================
 function updateNavState() {
   var nav = document.getElementById('nav');
-  var scrollIndicator = document.getElementById('scrollIndicator');
 
   if (window.scrollY > 50) {
     nav.classList.add('scrolled');
   } else {
     nav.classList.remove('scrolled');
-  }
-
-  if (scrollIndicator) {
-    scrollIndicator.style.opacity = window.scrollY > 200 ? '0' : '1';
   }
 }
 
@@ -172,6 +42,18 @@ function updateBackToTopVisibility() {
   var btn = document.getElementById('backToTop');
   if (!btn) return;
   btn.classList.toggle('visible', window.scrollY > 450);
+}
+
+// ========================================
+// MOBILE STICKY CTA (hidden on hero and contact)
+// ========================================
+function updateStickyCta() {
+  var cta = document.getElementById('stickyCta');
+  var contact = document.getElementById('contact');
+  if (!cta || !contact) return;
+  var pastHero = window.scrollY > window.innerHeight * 0.7;
+  var beforeContact = contact.getBoundingClientRect().top > window.innerHeight * 0.85;
+  cta.classList.toggle('visible', pastHero && beforeContact);
 }
 
 function initBackToTop() {
@@ -265,16 +147,26 @@ function initMobileMenu() {
   var mobileMenu = document.getElementById('mobileMenu');
   var mobileLinks = document.querySelectorAll('.mobile-link');
 
+  function setOpen(open) {
+    hamburger.classList.toggle('open', open);
+    mobileMenu.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
   hamburger.addEventListener('click', function () {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
+    setOpen(!mobileMenu.classList.contains('open'));
   });
 
   mobileLinks.forEach(function (link) {
     link.addEventListener('click', function () {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
+      setOpen(false);
     });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setOpen(false);
   });
 }
 
@@ -301,37 +193,47 @@ function initSmoothScroll() {
 }
 
 // ========================================
-// TILT EFFECT ON CARDS
+// CARD SPOTLIGHT (desktop only)
 // ========================================
-function initCardTilt() {
-  if (window.matchMedia('(pointer: fine)').matches) {
-    var cards = document.querySelectorAll(
-      '.project-card, .exp-card, .contact-card'
-    );
+function initCardSpotlight() {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
 
-    cards.forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var rect = card.getBoundingClientRect();
-        var x = e.clientX - rect.left;
-        var y = e.clientY - rect.top;
-        var centerX = rect.width / 2;
-        var centerY = rect.height / 2;
-        var rotateX = ((y - centerY) / centerY) * -4;
-        var rotateY = ((x - centerX) / centerX) * 4;
-
-        card.style.transform =
-          'perspective(800px) rotateX(' +
-          rotateX +
-          'deg) rotateY(' +
-          rotateY +
-          'deg) translateY(-4px)';
-      });
-
-      card.addEventListener('mouseleave', function () {
-        card.style.transform = '';
-      });
+  document.querySelectorAll('.spotlight').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      card.style.setProperty('--mx', e.clientX - rect.left + 'px');
+      card.style.setProperty('--my', e.clientY - rect.top + 'px');
     });
-  }
+  });
+}
+
+// ========================================
+// COPY EMAIL
+// ========================================
+function initCopyEmail() {
+  var btn = document.getElementById('copyEmail');
+  var label = document.getElementById('copyEmailLabel');
+  if (!btn || !label) return;
+
+  btn.addEventListener('click', function () {
+    var email = btn.getAttribute('data-email');
+    var done = function () {
+      btn.classList.add('copied');
+      label.textContent = 'Copied!';
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        label.textContent = 'Copy';
+      }, 2000);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(done, function () {
+        window.location.href = 'mailto:' + email;
+      });
+    } else {
+      window.location.href = 'mailto:' + email;
+    }
+  });
 }
 
 // ========================================
@@ -437,7 +339,7 @@ function initWhenVisible(element, initFn) {
 }
 
 function initAutoplayVideosWhenVisible() {
-  var videos = document.querySelectorAll('video[autoplay]');
+  var videos = document.querySelectorAll('video[data-autoplay]');
   if (!videos.length) return;
 
   if (!('IntersectionObserver' in window)) {
@@ -484,6 +386,7 @@ window.addEventListener('scroll', function () {
       updateNavState();
       updateActiveLink();
       updateBackToTopVisibility();
+      updateStickyCta();
       ticking = false;
     });
     ticking = true;
@@ -497,18 +400,14 @@ document.addEventListener('DOMContentLoaded', function () {
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (!reduceMotion) {
-    createParticles();
-    initComets();
-    initCursorGlow();
     initCarousel();
   }
   initRevealAnimations();
   initSkillBars();
   initMobileMenu();
   initSmoothScroll();
-  if (!reduceMotion) {
-    initCardTilt();
-  }
+  initCardSpotlight();
+  initCopyEmail();
 
   initAutoplayVideosWhenVisible();
 
@@ -534,4 +433,5 @@ document.addEventListener('DOMContentLoaded', function () {
   updateNavState();
   updateScrollProgress();
   updateBackToTopVisibility();
+  updateStickyCta();
 });
