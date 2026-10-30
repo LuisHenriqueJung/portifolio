@@ -2,25 +2,25 @@
    VARIABLES & RESET
    ======================================== */
 :root {
-  /* Palette: change these tokens to re-theme the whole site */
-  --p: #3b82f6;
-  --p-rgb: 59, 130, 246;
-  --p-light: #93c5fd;
-  --p-light-rgb: 147, 197, 253;
-  --s-rgb: 56, 189, 248;
-  --s-light: #7dd3fc;
-  --t: #22d3ee;
-  --t-rgb: 34, 211, 238;
-  --t-light: #67e8f9;
-  --g1: #1d4ed8;
-  --g2: #3b82f6;
-  --g3: #06b6d4;
-  --aurora-1: #1d4ed8;
-  --aurora-2: #0369a1;
-  --aurora-3: #0891b2;
-  --surface-tint: #0f1a33;
-  --panel: #0a1020;
-  --on-light: #0b1530;
+  /* Palette: neutral black & white + one accent. Change --p / --p-rgb to swap the accent */
+  --p: #ff6b2c;
+  --p-rgb: 255, 107, 44;
+  --p-light: #ff9a6b;
+  --p-light-rgb: 255, 154, 107;
+  --s-rgb: 255, 255, 255;
+  --s-light: #e4e4e7;
+  --t: #e4e4e7;
+  --t-rgb: 228, 228, 231;
+  --t-light: #d4d4d8;
+  --g1: #ff6b2c;
+  --g2: #ff6b2c;
+  --g3: #ff8a4c;
+  --aurora-1: #7c2d12;
+  --aurora-2: #27272a;
+  --aurora-3: #3f3f46;
+  --surface-tint: #18181b;
+  --panel: #0c0c0e;
+  --on-light: #0a0a0a;
 
   --violet: var(--p);
   --violet-light: var(--p-light);
@@ -31,22 +31,22 @@
   --amber: #fbbf24;
   --green: #22c55e;
 
-  --bg-rgb: 6, 9, 16;
-  --surface-rgb: 13, 18, 32;
-  --bg-dark: #060910;
-  --bg-alt: #0a0f1a;
+  --bg-rgb: 9, 9, 11;
+  --surface-rgb: 19, 19, 22;
+  --bg-dark: #09090b;
+  --bg-alt: #0f0f11;
   --bg-card: rgba(255, 255, 255, 0.025);
-  --bg-card-solid: #0d1220;
+  --bg-card-solid: #131316;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.14);
 
-  --text-primary: #f3f6fc;
-  --text-secondary: #a3afc6;
-  --text-muted: #74809a;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
 
   --gradient: linear-gradient(135deg, var(--g1) 0%, var(--g2) 50%, var(--g3) 100%);
-  --gradient-text: linear-gradient(100deg, #60a5fa 0%, #38bdf8 50%, #22d3ee 100%);
-  --gradient-border: linear-gradient(135deg, rgba(var(--p-rgb), 0.6), rgba(var(--s-rgb), 0.3), rgba(var(--t-rgb), 0.5));
+  --gradient-text: linear-gradient(100deg, #ff6b2c 0%, #ff9a6b 100%);
+  --gradient-border: linear-gradient(135deg, rgba(var(--p-rgb), 0.55), rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.18));
   --glow-violet: 0 10px 40px -10px rgba(var(--p-rgb), 0.65);
   --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.25);
   --elevation-2: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
@@ -195,7 +195,7 @@ img, video { max-width: 100%; }
 .btn-primary:hover {
   transform: translateY(-2px);
   background-position: 100% 50%;
-  box-shadow: 0 16px 50px -10px rgba(var(--s-rgb), 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 50px -10px rgba(var(--p-rgb), 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .btn-primary:hover::before { left: 140%; }
@@ -484,9 +484,9 @@ img, video { max-width: 100%; }
   border-radius: 999px;
   font-size: 13px;
   font-weight: 600;
-  color: #bbf7d0;
-  background: rgba(34, 197, 94, 0.08);
-  border: 1px solid rgba(34, 197, 94, 0.28);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-strong);
   margin-bottom: 22px;
 }
 
@@ -599,7 +599,7 @@ img, video { max-width: 100%; }
   aspect-ratio: 1;
   border-radius: 50%;
   padding: 6px;
-  background: conic-gradient(from 0deg, var(--g1), var(--g2), var(--g3), var(--t), var(--g1));
+  background: conic-gradient(from 0deg, var(--p), rgba(255, 255, 255, 0.15) 35%, rgba(255, 255, 255, 0.6) 60%, rgba(255, 255, 255, 0.15) 80%, var(--p));
   box-shadow: 0 30px 80px -20px rgba(var(--p-rgb), 0.6);
   animation: spin-ring 10s linear infinite;
 }
@@ -913,7 +913,7 @@ img, video { max-width: 100%; }
 .icon-violet { color: var(--p-light); background: rgba(var(--p-rgb), 0.14); border: 1px solid rgba(var(--p-rgb), 0.3); }
 .icon-cyan { color: var(--t-light); background: rgba(var(--t-rgb), 0.1); border: 1px solid rgba(var(--t-rgb), 0.28); }
 .icon-pink { color: var(--s-light); background: rgba(var(--s-rgb), 0.12); border: 1px solid rgba(var(--s-rgb), 0.3); }
-.icon-amber { color: #fcd34d; background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.28); }
+.icon-amber { color: var(--t-light); background: rgba(var(--t-rgb), 0.08); border: 1px solid rgba(var(--t-rgb), 0.2); }
 
 /* ========================================
    STORY / TIMELINE
